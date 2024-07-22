@@ -28,7 +28,7 @@ End Function
 
 Public Function Base32Decode(ByVal str As String) As Byte()
     'No dependency necessary
-    Dim bI%, iI%, oB%, oI%, byI%, b%, i&, o() As Byte: str = Replace$(Trim$(UCase$(str)), "=", ""): ReDim o(Int(Len(str) * 5 / 8) - 1): bI = 0: iI = 1: oB = 0: oI = LBound(o)
+    Dim bI&, iI&, oB&, oI&, byI&, b&, i&, o() As Byte: str = Replace$(Trim$(UCase$(str)), "=", ""): ReDim o(Int(Len(str) * 5 / 8) - 1): bI = 0: iI = 1: oB = 0: oI = LBound(o)
     Do While oI <= UBound(o): byI = InStr(1, Base32Chars, Mid$(str, iI, 1)) - 1: b = IIf(5 - bI < 8 - oB, 5 - bI, 8 - oB): o(oI) = (o(oI) * (2 ^ b) + (byI \ (2 ^ (5 - (bI + b))))) And &HFF: bI = bI + b: If bI >= 5 Then bI = 0: iI = iI + 1
         oB = oB + b: If oB >= 8 Then oI = oI + 1: oB = 0
     Loop: Base32Decode = o
